@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" prefHeight="289.0" prefWidth="361.0" spacing="10" styleClass="anchor-pane" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.explore.inventorymanagementsystem.controllers.EditItemModalController">
+   <Button fx:id="iconUpdate" alignment="CENTER" mnemonicParsing="false" onAction="#enableEditing" prefHeight="38.0" prefWidth="50.0" styleClass="add" stylesheets="@css/styles.css">
+      <graphic>
+         <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="24.0" wrappingWidth="24.0">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </FontAwesomeIconView>
+      </graphic>
+      <VBox.margin>
+         <Insets left="300.0" top="20.0" />
+      </VBox.margin>
+   </Button>
+   <Button fx:id="bill_delete" alignment="CENTER" mnemonicParsing="false" onAction="#onDelete" prefHeight="25.0" prefWidth="102.0" snapToPixel="false" styleClass="delete" stylesheets="@css/styles.css" VBox.vgrow="ALWAYS">
+      <graphic>
+         <FontAwesomeIconView fill="WHITE" glyphName="MINUS_CIRCLE" selectionFill="#740000" size="24.0" styleClass="button" text="" />
+      </graphic>
+      <VBox.margin>
+         <Insets left="170.0" right="45.0" top="-46.0" />
+      </VBox.margin>
+   </Button>
+    <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Edit Item Details" />
+    <GridPane hgap="10" prefWidth="273.0" vgap="10" VBox.vgrow="ALWAYS">
+        <!-- TODO (Sam): Design edit item modal -->
+        <!-- 1. Add fields for item ID, quantity, price, etc. -->
+        <!-- 2. Include buttons for saving and canceling changes -->
+        <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="idField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <!-- TODO (Kyle): Try and ensure fields are bound to controller -->
+    </GridPane>
+    <Button onAction="#saveChanges" styleClass="add" stylesheets="@css/styles.css" text="Save">
+      <VBox.margin>
+         <Insets bottom="15.0" />
+      </VBox.margin></Button>
+</VBox>
