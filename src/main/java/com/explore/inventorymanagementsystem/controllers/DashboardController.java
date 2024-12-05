@@ -586,19 +586,22 @@ public class DashboardController {
     }
 
     public ObservableList<Invoice> listBillingData() {
-        // TODO (Richie): Implement billing data retrieval
-        // 1. Create observable list for invoices
-        // 2. Get all invoices from service
-        // 3. Handle any database errors
-        throw new UnsupportedOperationException("Not implemented yet");
+        ObservableList<Invoice> billingList = FXCollections.observableArrayList();
+        try {
+            billingList = invoiceService.getAllInvoices();
+            return billingList;
+        } catch (Exception e){
+            LOGGER.error("Error executing invoice data sql statement {}", e.getMessage());
+        }
+        return billingList;
     }
 
     public void calculateFinalAmount() {
-        // TODO (Richie): Calculate and display final amount
-        // 1. Get final amount from invoice service
-        // 2. Update final_amount label
-        // 3. Handle any calculation errors
-        throw new UnsupportedOperationException("Not implemented yet");
+        try{
+            final_amount.setText(invoiceService.calculateFinalAmount());
+        }catch (Exception err){
+            LOGGER.error("Error executing final amount sql statement {}", err.getMessage());
+        }
     }
 
     public void showBillingData() {
