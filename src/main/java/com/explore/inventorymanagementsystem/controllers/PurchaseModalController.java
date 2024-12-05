@@ -69,12 +69,16 @@ public class PurchaseModalController {
 
     @FXML
     private void processPurchase(int quantity) {
-        // TODO (Richie): Implement purchase processing
-        // 1. Validate quantity and product availability
-        // 2. Create and save Invoice and Sales records
-        // 3. Update product quantity in database
-        // 4. Handle success/failure scenarios
-        throw new UnsupportedOperationException("Not implemented yet");
+        Stage stage = (Stage) quantityField.getScene().getWindow();
+        stage.close();
+
+        Invoice invoice = new Invoice(generateInvoiceNumber(), quantity, product.getPrice(), calculateTotalPrice(product, quantity), LocalDateTime.now());
+        Sales sales = new Sales(invoice.getItemId(), user.getId(), user.getUsername(), product.getPrice(), quantity, calculateTotalPrice(product, quantity), LocalDate.now().toString(), product.getId().toString());
+        product.setQuantity(product.getQuantity() - quantity);
+        productService.updateItem(product);
+
+        salesService.createItem(sales);
+        invoiceService.createInvoice(invoice);
     }
 
     private String generateInvoiceNumber() {
@@ -84,12 +88,8 @@ public class PurchaseModalController {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @FXML
-    private void closeModal() {
-        // TODO (Sam): Implement modal close functionality
-        // 1. Close the current modal window
-        // 2. Optionally confirm with user before closing
-        throw new UnsupportedOperationException("Not implemented yet");
+    private double calculateTotalPrice(Product product, int quantity) {
+        return product.getPrice() * quantity;
     }
 
     public void setQuantityOptions() {
