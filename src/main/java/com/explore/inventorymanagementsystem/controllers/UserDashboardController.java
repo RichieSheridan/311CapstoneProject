@@ -99,45 +99,96 @@ public class UserDashboardController {
     private final ProductService productService = new ProductService();
 
     @FXML
+    public void loadProductTable () {
+        // setMode(Mode.PRODUCT);
+
+        col_product_item_num.setText("ID");
+        col_product_name.setText("Product Name");
+        col_product_quantity.setText("Quantity");
+        col_product_price.setText("Price");
+        col_product_total_amt.setText("Total Amount");
+
+        showProductData();
+
+        productList = displayProducts();
+        product_table.getItems().setAll(productList);
+    }
+
+    private <T extends Reportable> ObservableList<Reportable> convertToReportableList(ObservableList<T> list) {
+        return FXCollections.observableArrayList(list);
+    }
+
+    public void showProductData(){
+        ObservableList<Product> productsList = displayProducts();
+        col_product_item_num.setCellValueFactory(new PropertyValueFactory<>("id"));
+        col_product_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col_product_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        col_product_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        col_product_total_amt.setCellValueFactory(new PropertyValueFactory<>("reorderPoint"));
+
+        ObservableList<Reportable> reportableList = convertToReportableList(productsList);
+        product_table.setItems(reportableList);
+    }
+
+    public ObservableList<Product> displayProducts(){
+        try {
+            productList = productService.getAllItems();
+            return productList;
+        } catch (Exception err){
+            Alert alert=new Alert(Alert.AlertType.ERROR);
+            alert.setHeight(500);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText(err.getMessage());
+            alert.showAndWait();
+        }
+        return null;
+    }
+
+    public void setUsername(String username){
+        user.setText(username);
+    }
+
+    @FXML
+    public void handleProductClick(MouseEvent event) {
+        if (event.getClickCount() == 2) { //Doubleclick to open modal
+            Product selectedProduct = (Product) product_table.getSelectionModel().getSelectedItem();
+            if (selectedProduct != null) {
+                openPurchaseModal(selectedProduct);
+            }
+        }
+    }
+
+    private void openPurchaseModal(Product product) {
+        try {
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("views/purchaseModal.fxml"));
+            Parent root = loader.load();
+
+            PurchaseModalController controller = loader.getController();
+            controller.setProduct(product);
+            controller.setUser(LoginController.sessions.get(user.getText()));
+
+            Stage modalStage = new Stage();
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.setScene(new Scene(root));
+            modalStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
     public void initialize() {
-        // TODO (Kyle): Initialize UI components
-        // 1. Set up product_table columns with PropertyValueFactory
-        // 2. Load initial product data into table
-        // 3. Set up event listeners for table row selection
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
+        loadProductTable();
+        showProductData();
+        product_table.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2 && !product_table.getSelectionModel().isEmpty()) {
+                Product selectedItem = (Product) product_table.getSelectionModel().getSelectedItem();
+                openPurchaseModal(selectedItem);
+            }
+        });
 
-    @FXML
-    private void handleSignOut(ActionEvent event) {
-        // TODO (Efe): Implement sign-out functionality
-        // 1. Close current stage
-        // 2. Redirect to login screen
-        // 3. Clear any session data
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    private void loadProductData() {
-        // TODO (Richie): Load product data from database
-        // 1. Fetch product list using productService
-        // 2. Populate product_table with data
-        // 3. Handle any data retrieval errors
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    private void updateProductTable() {
-        // TODO (Kyle): Update product table with new data
-        // 1. Refresh table view with updated product list
-        // 2. Ensure UI reflects any changes in data
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    @FXML
-    private void handleProductSelection(MouseEvent event) {
-        // TODO (Sam): Handle product selection in table
-        // 1. Get selected product from product_table
-        // 2. Display product details in UI
-        // 3. Enable/disable relevant UI controls
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 
 }
