@@ -61,11 +61,46 @@ public class EditItemModalController {
     Stage modalStage;
 
     public void setItemData(Object item, Mode mode) {
-        // TODO (Richie): Load item data into modal fields
-        // 1. Check mode and cast item to appropriate type (e.g., Invoice)
-        // 2. Populate fields with item data (e.g., id, quantity, price)
-        // 3. Handle any data conversion or formatting
-        throw new UnsupportedOperationException("Not implemented yet");
+        this.selectedItem = item;
+        this.currentMode = mode;
+
+        if (mode == Mode.INVOICE && item instanceof Invoice invoice) {
+            idField.setText(String.valueOf(invoice.getId()));
+            itemIdField.setText(invoice.getItemId());
+            quantityField.setText(String.valueOf(invoice.getQuantity()));
+            unitPriceField.setText(String.valueOf(invoice.getUnitPrice()));
+            totalPriceField.setText(String.valueOf(invoice.getTotalPrice()));
+            saleDateField.setText(invoice.getSaleDate().format(formatter));
+
+        } else if (mode == Mode.PRODUCT && item instanceof Product product) {
+            idField.setText(String.valueOf(product.getId()));
+            invoiceNumberField.setText(product.getName());
+            customerNameField.setText(product.getDescription());
+            quantityField.setText(String.valueOf(product.getQuantity()));
+            unitPriceField.setText(String.valueOf(product.getPrice()));
+            itemIdField.setText(product.getCategory());
+            saleDateField.setText(product.getSupplier());
+            totalPriceField.setText(String.valueOf(product.getReorderPoint()));
+
+        } else if (mode == Mode.PURCHASE && item instanceof Purchase purchase) {
+            idField.setText(String.valueOf(purchase.getItemId()));
+            quantityField.setText(String.valueOf(purchase.getQuantity()));
+            unitPriceField.setText(String.valueOf(purchase.getUnitPrice()));
+            totalPriceField.setText(String.valueOf(purchase.getTotalPrice()));
+            saleDateField.setText(purchase.getPurchaseDate().format(formatter));
+            itemIdField.setText(purchase.getSupplierInfo());
+            customerNameField.setText(purchase.getStatus().toString());
+
+        } else if (mode == Mode.SALES && item instanceof Sales sale) {
+            invoiceNumberField.setText(sale.getInvoiceNumber());
+            idField.setText(String.valueOf(sale.getCustomerId()));
+            customerNameField.setText(sale.getCustomerName());
+            unitPriceField.setText(String.valueOf(sale.getPrice()));
+            quantityField.setText(String.valueOf(sale.getQuantity()));
+            totalPriceField.setText(String.valueOf(sale.getTotalAmount()));
+            saleDateField.setText(sale.getDate());
+            itemIdField.setText(sale.getItemNum());
+        }
     }
 
     @FXML
