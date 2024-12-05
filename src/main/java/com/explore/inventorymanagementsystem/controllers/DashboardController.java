@@ -531,12 +531,18 @@ public class DashboardController {
     }
 
     private int getInvoiceCount() {
-        // TODO (Richie): Implement invoice counting logic
-        // 1. Get last invoice number from salesService
-        // 2. Extract and parse the numeric portion
-        // 3. Handle null/invalid cases
-        // 4. Return current count or 0 if none exist
-        throw new UnsupportedOperationException("Not implemented yet");
+        String lastInvoiceNumber = salesService.getLastSalesItem();
+        if (lastInvoiceNumber != null) {
+            Pattern pattern = Pattern.compile("(\\d{3})$");
+            Matcher matcher = pattern.matcher(lastInvoiceNumber);
+
+            if (matcher.find()) {
+                return Integer.parseInt(matcher.group(1));
+            } else {
+                LOGGER.warn("Invoice number format invalid: " + lastInvoiceNumber);
+            }
+        }
+        return 0;
     }
 
     private void showErrorAlert(String message) {
