@@ -73,11 +73,23 @@ public class SalesService {
 
     // Method to get the items sold for the current month
     public String getItemSoldThisMonth(String monthName) {
-        // TODO (Steven): Implement monthly sales tracking with testing
-        // 1. Write test cases for monthly sales calculation
-        // 2. Verify data aggregation accuracy
-        // 3. Test different month scenarios
-        throw new UnsupportedOperationException("Not implemented yet");
+
+        String sql = "SELECT SUM(quantity) AS total_sold FROM sales WHERE MONTHNAME(date) = ?";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, monthName);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int totalSold = rs.getInt("total_sold");
+                    return totalSold == 0 ? "No sales this month" : String.valueOf(totalSold);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error fetching items sold this month for {}", monthName, e);
+        }
+        return "Error retrieving sales data";
     }
 
     public boolean updateSales(Sales item) {

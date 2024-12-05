@@ -8,10 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Level;
 
 public class ProductService {
@@ -28,7 +26,7 @@ public class ProductService {
     }
 
     // Read
-    public Product getItemById(UUID id) {
+    public Product getItemById(int id) {
         String sql = "SELECT * FROM products WHERE id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
@@ -57,20 +55,56 @@ public class ProductService {
     }
 
     public ObservableList<Product> getAllItems() {
-        // TODO (Steven): Implement product retrieval from database
-        // 1. Execute SELECT query on products table
-        // 2. Convert ResultSet to Product objects
-        // 3. Return ObservableList of products
-        throw new UnsupportedOperationException("Not implemented yet");
+
+        String sql = "SELECT * FROM products";
+        ObservableList<Product> products = FXCollections.observableArrayList();
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                products.add(new Product(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("description"),
+                        rs.getInt("quantity"),
+                        rs.getDouble("price"),
+                        rs.getString("category"),
+                        rs.getString("supplier"),
+                        rs.getInt("reorder_point")
+                ));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error retrieving products from database", e, Level.SEVERE);
+        }
+        return products;
     }
 
     // Update
     public boolean updateItem(Product item) {
-        // TODO (Steven): Implement product update in database
-        // 1. Prepare SQL UPDATE statement
-        // 2. Set parameters from Product object
-        // 3. Execute update and handle errors
-        throw new UnsupportedOperationException("Not implemented yet");
+
+        String sql = "UPDATE products SET name = ?, description = ?, quantity = ?, price = ?, category = ?, supplier = ?, reorder_point = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, item.getName());
+            pstmt.setString(2, item.getDescription());
+            pstmt.setInt(3, item.getQuantity());
+            pstmt.setDouble(4, item.getPrice());
+            pstmt.setString(5, item.getCategory());
+            pstmt.setString(6, item.getSupplier());
+            pstmt.setInt(7, item.getReorderPoint());
+            pstmt.setInt(8, item.getId());
+
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            LOGGER.error("Error updating product in database", e, Level.SEVERE);
+        }
+        return false;
     }
 
     // Delete

@@ -65,19 +65,42 @@ public class InvoiceService {
 
     // Delete an invoice by ID
     public void deleteInvoice(int id) {
-        // TODO (Steven): Implement invoice deletion
-        // 1. Verify database state before/after deletion
-        // 2. Test error handling scenarios
-        throw new UnsupportedOperationException("Not implemented yet");
+
+        String sql = "DELETE FROM invoices WHERE id = ?";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                LOGGER.info("Invoice with ID {} deleted successfully", id);
+            } else {
+                LOGGER.warn("No invoice found with ID {}", id);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("Error deleting invoice with ID {}", id, e);
+        }
     }
 
     public String calculateFinalAmount() {
-        // TODO (Steven): Implement final amount calculation with testing
-        // 1. Verify calculation accuracy
-        // 2. Test edge cases (null values, zero amounts)
-        throw new UnsupportedOperationException("Not implemented yet");
+
+        String sql = "SELECT SUM(total_price) AS final_amount FROM invoices";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                double finalAmount = rs.getDouble("final_amount");
+                LOGGER.info("Final amount calculated: {}", finalAmount);
+                return String.format("Final Amount: $%.2f", finalAmount);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("Error calculating final amount", e);
+        }
+        return "Error calculating final amount";
     }
 }
-
-
-
