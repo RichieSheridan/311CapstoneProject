@@ -462,16 +462,22 @@ public class DashboardController {
     }
 
     private void saveInvoiceData() {
-        // TODO (Richie): Implement invoice data persistence
-        // 1. Create new Invoice object using:
-        //    - Generated invoice number
-        //    - Quantity from bill_quantity
-        //    - Price from bill_price
-        //    - Total amount from bill_total_amount
-        //    - Current date/time
-        // 2. Save to database using invoiceService
-        // 3. Handle success/failure scenarios
-        throw new UnsupportedOperationException("Not implemented yet");
+        boolean status = invoiceService.createInvoice(new Invoice(
+                generateInvoiceNumber(),
+                Integer.parseInt(bill_quantity.getValue().toString()),
+                Double.parseDouble(bill_price.getText()),
+                Double.parseDouble(bill_total_amount.getText()),
+                bill_date.getValue().atStartOfDay()
+        ));
+
+        if (!status) {
+            showErrorAlert("Error Saving new Invoice Data");
+        } else {
+            showSuccessAlert("Saved Invoice Data");
+            ObservableList<Invoice> invoiceList = getInvoiceList();
+            ObservableList<Reportable> reportableList = convertToReportableList(invoiceList);
+            product_table.setItems(reportableList);
+        }
     }
 
     private void saveProductData() {
@@ -496,14 +502,24 @@ public class DashboardController {
     }
 
     private void savePurchaseData() {
-        // TODO (Richie): Implement purchase data persistence
-        // 1. Create new Purchase object using form data:
-        //    - Item ID, quantity, price, total amount
-        //    - Current date/time
-        //    - Supplier info and PENDING status
-        // 2. Save to database using purchaseService
-        // 3. Update UI based on success/failure
-        throw new UnsupportedOperationException("Not implemented yet");
+        boolean status = purchaseService.createPurchase(new Purchase(
+                Integer.parseInt(bill_item.getText()),
+                Integer.parseInt(bill_quantity.getValue().toString()),
+                Double.parseDouble(bill_price.getText()),
+                Double.parseDouble(bill_total_amount.getText()),
+                bill_date.getValue().atStartOfDay(),
+                ItemSupplier.getText(),
+                Status.PENDING
+        ));
+
+        if (!status) {
+            showErrorAlert("Error Saving new Purchase Data");
+        } else {
+            showSuccessAlert("Saved Purchase Data");
+            ObservableList<Purchase> purchaseList = getPurchaseList();
+            ObservableList<Reportable> reportableList = convertToReportableList(purchaseList);
+            product_table.setItems(reportableList);
+        }
     }
 
     private String generateInvoiceNumber() {
