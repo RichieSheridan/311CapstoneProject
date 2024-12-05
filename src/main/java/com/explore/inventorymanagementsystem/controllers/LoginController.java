@@ -67,9 +67,7 @@ public class LoginController {
     }
 
     @FXML
-    private void onEnter(ActionEvent event) {
-        // TODO (Sam): Trigger login on enter key press
-        // 1. Call handleLogin() when enter key is pressed in username/password fields
-        throw new UnsupportedOperationException("Not implemented yet");
+    void onEnter(ActionEvent event) {
+        Login(event);
     }
 }

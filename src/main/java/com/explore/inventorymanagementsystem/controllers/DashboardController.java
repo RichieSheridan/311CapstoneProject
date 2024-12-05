@@ -556,11 +556,11 @@ public class DashboardController {
     }
 
     public void activateDashboard() {
-        // TODO (Sam): Implement dashboard activation
-        // 1. Show dashboard pane
-        // 2. Hide all other panes (billing, customer, sales, purchase)
-        // 3. Update UI state
-        throw new UnsupportedOperationException("Not implemented yet");
+        dasboard_pane.setVisible(true);
+        billing_pane.setVisible(false);
+        customer_pane.setVisible(false);
+        sales_pane.setVisible(false);
+        purchase_pane.setVisible(false);
     }
 
     public ObservableList<Invoice> listBillingData() {
