@@ -27,11 +27,4 @@ public class ReportGeneratorUtil {
         // 4. Save report to specified location
         throw new UnsupportedOperationException("Not implemented yet");
     }
-
-    private static void addTableHeader(Table table, List<String> columns) {
-        // TODO (Sam): Implement table header styling
-        // 1. Add column headers to PDF table
-        // 2. Apply proper styling (fonts, colors, alignment)
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
 }

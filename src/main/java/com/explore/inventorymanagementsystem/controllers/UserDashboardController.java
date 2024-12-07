@@ -130,14 +130,4 @@ public class UserDashboardController {
         // 2. Ensure UI reflects any changes in data
         throw new UnsupportedOperationException("Not implemented yet");
     }
-
-    @FXML
-    private void handleProductSelection(MouseEvent event) {
-        // TODO (Sam): Handle product selection in table
-        // 1. Get selected product from product_table
-        // 2. Display product details in UI
-        // 3. Enable/disable relevant UI controls
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
 }

@@ -84,13 +84,7 @@ public class PurchaseModalController {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @FXML
-    private void closeModal() {
-        // TODO (Sam): Implement modal close functionality
-        // 1. Close the current modal window
-        // 2. Optionally confirm with user before closing
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
+
 
     public void setQuantityOptions() {
         ObservableList<Integer> quantityOptions = FXCollections.observableArrayList();

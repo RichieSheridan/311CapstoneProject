@@ -123,11 +123,5 @@ public class EditItemModalController {
         });
     }
 
-    @FXML
-    private void cancelEdit() {
-        // TODO (Sam): Implement cancel edit functionality
-        // 1. Close modal without saving changes
-        // 2. Optionally confirm cancellation with user
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
+
 }
