@@ -11,6 +11,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class ProductService {
@@ -40,7 +41,7 @@ public class ProductService {
     }
 
     // Read
-    public Product getItemById(int id) {
+    public Product getItemById(UUID id) {
         String sql = "SELECT * FROM products WHERE id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
