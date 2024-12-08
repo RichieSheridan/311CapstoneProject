@@ -154,6 +154,7 @@ public class DashboardController {
     }
 
     public void checkForPriceAndQuantity(){
+        // Checks if price and quantity are provided; calculates total if valid, or sets to 0
         if(!bill_price.getText().isBlank()&& !bill_quantity.getSelectionModel().isEmpty()){
             bill_total_amount.setText(String.valueOf(Integer.parseInt(bill_price.getText())*Integer.parseInt(bill_quantity.getValue().toString())));
         }else{
@@ -163,6 +164,7 @@ public class DashboardController {
 
     @FXML
     public void downloadReport (){
+        // Generates different types of reports based on the current mode (PRODUCT, SALES, INVOICE, PURCHASE)
         try {
             switch (currentMode){
                 case PRODUCT ->
@@ -183,10 +185,12 @@ public class DashboardController {
     }
 
     public ObservableList<Product> getItemsList(){
+        // Retrieves a list of products from the service layer
         ObservableList<Product> productsList = FXCollections.observableArrayList();
         try {
             productsList = productService.getAllItems();
         } catch (Exception err){
+            // Shows an error alert if the product retrieval fails
             Alert alert=new Alert(Alert.AlertType.ERROR);
             alert.setHeight(500);
             alert.setTitle("Error Message");
@@ -198,10 +202,12 @@ public class DashboardController {
     }
 
     public ObservableList<Sales> getSalesList(){
+        // Retrieves a list of sales from the service layer
         ObservableList<Sales> salesList = FXCollections.observableArrayList();
         try {
             salesList = salesService.getAllItems();
         } catch (Exception err){
+            // Shows an error alert if the sales retrieval fails
             Alert alert=new Alert(Alert.AlertType.ERROR);
             alert.setHeight(500);
             alert.setTitle("Error Message");
@@ -213,10 +219,12 @@ public class DashboardController {
     }
 
     public ObservableList<Invoice> getInvoiceList(){
+        // Retrieves a list of invoices from the service layer
         ObservableList<Invoice> invoiceList = FXCollections.observableArrayList();
         try {
             invoiceList = invoiceService.getAllInvoices();
         } catch (Exception err){
+            // Shows an error alert if the invoice retrieval fails
             Alert alert=new Alert(Alert.AlertType.ERROR);
             alert.setHeight(500);
             alert.setTitle("Error Message");
@@ -228,10 +236,12 @@ public class DashboardController {
     }
 
     public ObservableList<Purchase> getPurchaseList(){
+        // Retrieves a list of purchases from the service layer
         ObservableList<Purchase> purchaseList = FXCollections.observableArrayList();
         try {
             purchaseList = purchaseService.getAllPurchases();
         } catch (Exception err){
+            // Shows an error alert if the purchase retrieval fails
             Alert alert=new Alert(Alert.AlertType.ERROR);
             alert.setHeight(500);
             alert.setTitle("Error Message");
@@ -244,6 +254,7 @@ public class DashboardController {
 
     @FXML
     public void loadProductTable () {
+        // Switches to the product mode and populates the product table with data
         setMode(Mode.PRODUCT);
 
         col_product_item_num.setText("ID");
@@ -254,6 +265,7 @@ public class DashboardController {
 
         showProductData();
 
+        // Fetch the list of products and display them in the table
         productList = getItemsList();
         product_table.getItems().setAll(productList);
         billing_table.setVisible(false);
@@ -261,6 +273,7 @@ public class DashboardController {
 
     @FXML
     private void loadSalesTable() {
+        // Switches to the sales mode and populates the sales table with data
         setMode(Mode.SALES);
         col_product_item_num.setText("ID");
         col_product_name.setText("Invoice Number");
@@ -273,6 +286,9 @@ public class DashboardController {
         col_product_quantity.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         col_product_price.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
         col_product_total_amt.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+        // Fetch the list of sales, convert to a reportable format, and display in the table
+        ObservableList<Sales> salesList = getSalesList();
         ObservableList<Sales> salesList = getSalesList();
         ObservableList<Reportable> reportableList = convertToReportableList(salesList);
         product_table.setItems(reportableList);
@@ -281,6 +297,7 @@ public class DashboardController {
 
     @FXML
     private void loadPurchaseTable() {
+        // Switches to the purchase mode and populates the purchase table with data
         setMode(Mode.PURCHASE);
 
         col_product_name.setText("Supplier");
@@ -294,6 +311,7 @@ public class DashboardController {
         col_product_price.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
         col_product_total_amt.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
+        // Fetch the list of purchases, convert to a reportable format, and display in the table
         ObservableList<Purchase> purchaseList = getPurchaseList();
         ObservableList<Reportable> reportableList = convertToReportableList(purchaseList);
         product_table.setItems(reportableList);
@@ -302,6 +320,7 @@ public class DashboardController {
 
     @FXML
     private void loadInvoiceTable() {
+        // Switches to the invoice mode and populates the invoice table with data
         setMode(Mode.INVOICE);
         col_product_item_num.setText("ID");
         col_product_name.setText("Quantity");
@@ -316,6 +335,8 @@ public class DashboardController {
         col_product_total_amt.setCellValueFactory(new PropertyValueFactory<>("saleDate"));
 //        ObservableList<Invoice> invoiceList = getInvoiceList();
 //        product_table.setItems(invoiceList);
+
+        // Fetch the list of invoices, convert to a reportable format, and display in the table
         ObservableList<Invoice> invoiceList = getInvoiceList();
         ObservableList<Reportable> reportableList = convertToReportableList(invoiceList);
         product_table.setItems(reportableList);
@@ -329,6 +350,7 @@ public class DashboardController {
     private Mode currentMode;
 
     public void setMode(Mode mode) {
+        // Sets the current mode (PRODUCT, SALES, INVOICE, PURCHASE) and adjusts UI elements
         currentMode = mode;
         switch (mode) {
             case SALES:
