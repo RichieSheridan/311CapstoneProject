@@ -56,7 +56,9 @@ public class LoginController {
 
         User user = userService.getUserByUsername(username);
 
+        // Check if the user exists and if the entered password matches the stored password
         if (user != null && passwordMatches(user.getPassword(), password)) {
+            // If login is successful, store the user in the session and display a success message
             sessions.put(username, user);
             status.setText("Login successful!");
             status.setStyle("-fx-text-fill: green;");
@@ -67,6 +69,7 @@ public class LoginController {
                 openUserDashboard();
             }
         } else {
+            // If the login credentials are invalid, display an error message
             status.setText("Invalid credentials.");
             status.setStyle("-fx-text-fill: red;");
             button_login.setDisable(false);
