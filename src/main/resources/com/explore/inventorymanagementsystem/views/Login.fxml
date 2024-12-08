@@ -15,66 +15,66 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.0" prefWidth="1080.0" style="-fx-border-color: A89873; -fx-border-width: 0px 20px 0px 20px; -fx-background-color: FBF5E6" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.explore.inventorymanagementsystem.controllers.LoginController">
-   <children>
-      <GridPane layoutX="137.0" layoutY="295.0" prefHeight="194.0" prefWidth="224.0" AnchorPane.leftAnchor="117.0" AnchorPane.rightAnchor="152.0" hgap="10" vgap="10">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="60.666676839192704" minHeight="0.0" prefHeight="52.666676839192704" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="105.33334350585936" minHeight="10.0" prefHeight="80.66665649414061" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="105.33334350585936" minHeight="10.0" prefHeight="80.66665649414061" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <TextField fx:id="textField_username" promptText="Username" GridPane.rowIndex="1">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </TextField>
-            <PasswordField fx:id="passwordField" promptText="Password" GridPane.rowIndex="2">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </PasswordField>
-      
-            <Label fx:id="status" alignment="CENTER" prefHeight="27.0" prefWidth="224.0" text="Please enter credentials" textFill="#9a791f" GridPane.halignment="CENTER">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Button fx:id="button_login" mnemonicParsing="false" onAction="#handleLogin" text="Login" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets left="25.0" />
-               </GridPane.margin>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-         </children>
-      </GridPane>
-      <GridPane layoutX="167.0" layoutY="118.0" prefHeight="175.0" prefWidth="200.0" AnchorPane.leftAnchor="167.66666666666669" AnchorPane.rightAnchor="125.66666666666663">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <ImageView fx:id="image1" fitHeight="191.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-               <image>
-                  <Image url="@../images/ims_icon.png" />
-               </image>
-            </ImageView>
-         </children>
-      </GridPane>
-      <Label fx:id="title" alignment="CENTER" layoutX="93.33333333333333" layoutY="45.0" prefHeight="38.0" prefWidth="406.0" text="Inventory Management System" textFill="#d30d0d" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="45.0">
-         <font>
-            <Font size="26.0" />
-         </font>
-      </Label>
-   </children>
+    <children>
+        <GridPane layoutX="137.0" layoutY="295.0" prefHeight="194.0" prefWidth="224.0" AnchorPane.leftAnchor="117.0" AnchorPane.rightAnchor="152.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="60.666676839192704" minHeight="0.0" prefHeight="52.666676839192704" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="105.33334350585936" minHeight="10.0" prefHeight="80.66665649414061" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="105.33334350585936" minHeight="10.0" prefHeight="80.66665649414061" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <TextField fx:id="textField_username" onAction="#onEnter" prefHeight="39.0" prefWidth="211.0" promptText="Username" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </TextField>
+                <PasswordField fx:id="passwordField" onAction="#onEnter" promptText="Password" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </PasswordField>
+
+                <Label fx:id="status" alignment="CENTER" prefHeight="27.0" prefWidth="224.0" text="Please enter credentials" textFill="#9a791f" GridPane.halignment="CENTER">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Label>
+                <Button fx:id="button_login" mnemonicParsing="false" onAction="#Login" text="Login" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                    <GridPane.margin>
+                        <Insets left="25.0" />
+                    </GridPane.margin>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+            </children>
+        </GridPane>
+        <GridPane layoutX="167.0" layoutY="118.0" prefHeight="175.0" prefWidth="200.0" AnchorPane.leftAnchor="167.66666666666669" AnchorPane.rightAnchor="125.66666666666663">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <ImageView fx:id="image1" fitHeight="191.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                    <image>
+                        <Image url="@../views/images/ims_iconcopy.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </GridPane>
+        <Label fx:id="title" alignment="CENTER" layoutX="93.33333333333333" layoutY="45.0" prefHeight="38.0" prefWidth="406.0" text="Inventory Management System" textFill="#d30d0d" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="45.0">
+            <font>
+                <Font size="26.0" />
+            </font>
+        </Label>
+    </children>
 </AnchorPane>

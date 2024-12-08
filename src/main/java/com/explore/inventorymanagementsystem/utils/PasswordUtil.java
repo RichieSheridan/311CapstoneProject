@@ -15,19 +15,22 @@ public class PasswordUtil {
     private static final int KEY_LENGTH = 128;
 
     public static String hashPassword(String password) {
-        // TODO (Efe): Implement password hashing
-        // 1. Use secure hashing algorithm (e.g., BCrypt)
-        // 2. Add salt if necessary
-        // 3. Return hashed password
-        throw new UnsupportedOperationException("Not implemented yet");
+        byte[] salt = generateSalt();
+        byte[] hashedPassword = hash(password, salt);
+        return Base64.getEncoder().encodeToString(salt) + ":" + Base64.getEncoder().encodeToString(hashedPassword);
     }
 
-    public static boolean verifyPassword(String password, String hashedPassword) {
-        // TODO (Efe): Implement password verification
-        // 1. Hash input password
-        // 2. Compare with stored hash
-        // 3. Return true if matches
-        throw new UnsupportedOperationException("Not implemented yet");
+    public static boolean verifyPassword(String enteredPassword, String storedHash) {
+        try {
+            String[] parts = storedHash.split(":");
+            byte[] salt = Base64.getDecoder().decode(parts[0]);
+            byte[] storedPasswordHash = Base64.getDecoder().decode(parts[1]);
+            byte[] enteredPasswordHash = hash(enteredPassword, salt);
+            return MessageDigest.isEqual(storedPasswordHash, enteredPasswordHash);
+        } catch (Exception e) {
+            System.err.println("Error during password verification: " + e.getMessage());
+            return false;
+        }
     }
 
     private static byte[] hash(String password, byte[] salt) {

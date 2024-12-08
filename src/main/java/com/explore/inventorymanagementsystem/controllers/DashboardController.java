@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -150,6 +151,14 @@ public class DashboardController {
     @FXML
     void onExit(MouseEvent event) {
         System.exit(0);
+    }
+
+    public void checkForPriceAndQuantity(){
+        if(!bill_price.getText().isBlank()&& !bill_quantity.getSelectionModel().isEmpty()){
+            bill_total_amount.setText(String.valueOf(Integer.parseInt(bill_price.getText())*Integer.parseInt(bill_quantity.getValue().toString())));
+        }else{
+            bill_total_amount.setText("0");
+        }
     }
 
     @FXML
@@ -276,14 +285,14 @@ public class DashboardController {
 
         col_product_name.setText("Supplier");
         col_product_quantity.setText("Status");
-        col_bill_price.setText("Total Price");
-        col_bill_total_amt.setText("Quantity");
+        col_product_price.setText("Total Price");
+        col_product_total_amt.setText("Quantity");
 
         col_product_item_num.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_product_name.setCellValueFactory(new PropertyValueFactory<>("supplierInfo"));
         col_product_quantity.setCellValueFactory(new PropertyValueFactory<>("status"));
-        col_bill_price.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-        col_bill_total_amt.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        col_product_price.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+        col_product_total_amt.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         ObservableList<Purchase> purchaseList = getPurchaseList();
         ObservableList<Reportable> reportableList = convertToReportableList(purchaseList);
@@ -346,6 +355,7 @@ public class DashboardController {
 //                bill_name.setPromptText("Enter Quantity");
 //                bill_phone.setPromptText("Enter Sale Date");
                 bill_name.setPromptText("Enter Product Id");
+                bill_name.clear();
                 // bill_phone.setPromptText("Enter Status");
                 bill_phone.setEditable(false);
                 bill_item.setEditable(false);
@@ -360,6 +370,7 @@ public class DashboardController {
                 ItemTotalAmount.setText("Total Price");
                 ItemDate.setText("Purchase Date");
 
+                bill_name.clear();
                 bill_name.setPromptText("Enter Supplier Info");
                 bill_phone.setPromptText("Enter Status");
                 bill_phone.setEditable(true);
@@ -379,28 +390,51 @@ public class DashboardController {
                 bill_item.setPromptText("Enter Supplier Info");
                 bill_price.setPromptText("Enter Product Price");
                 bill_total_amount.setPromptText("Enter Total amount");
+                bill_name.clear();
         }
     }
 
-    public void showProductData() {
-        // TODO (Kyle): Implement product data display
-        // 1. Get product list from service
-        // 2. Set up table column cell value factories
-        // 3. Convert to reportable list and update table
-        // 4. Set current date in date picker
-        throw new UnsupportedOperationException("Not implemented yet");
+    public void showProductData(){
+        ObservableList<Product> productsList = getItemsList();
+        col_product_item_num.setCellValueFactory(new PropertyValueFactory<>("id"));
+        col_product_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        col_product_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        col_product_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        col_product_total_amt.setCellValueFactory(new PropertyValueFactory<>("reorderPoint"));
+
+        ObservableList<Reportable> reportableList = convertToReportableList(productsList);
+        product_table.setItems(reportableList);
+
+        // product_table.setItems(productsList);
+        LocalDate date = LocalDate.now();
+        bill_date.setValue(date);
     }
 
     @FXML
     private void searchValues() {
-        // TODO (Kyle): Implement search functionality for the product table
-        // 1. Get search text from billing_table_search TextField
-        // 2. Filter items in product_table based on:
-        //    - Product name (case-insensitive)
-        //    - Date
-        // 3. Update table with filtered results
-        // 4. Show alert if no matches found
-        throw new UnsupportedOperationException("Not implemented yet");
+        String searchText = billing_table_search.getText().trim().toLowerCase();
+        var allItems = product_table.getItems();
+
+        if (searchText.isEmpty() ) {
+            product_table.setItems(originalItems);
+            return;
+        }
+
+        ObservableList<Reportable> filteredItems = allItems.filtered(item ->
+                item.getName().toLowerCase().contains(searchText) ||
+                        item.getDate().contains(searchText) ||
+                        item.getName().toLowerCase().contains(searchText)
+        );
+
+        if (filteredItems.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Search Result");
+            alert.setHeaderText(null);
+            alert.setContentText("No matching items found.");
+            alert.showAndWait();
+        }
+
+        product_table.setItems(filteredItems);
     }
 
     @FXML
@@ -503,7 +537,7 @@ public class DashboardController {
 
     private void savePurchaseData() {
         boolean status = purchaseService.createPurchase(new Purchase(
-                Integer.parseInt(bill_item.getText()),
+                bill_item.getText(),
                 Integer.parseInt(bill_quantity.getValue().toString()),
                 Double.parseDouble(bill_price.getText()),
                 Double.parseDouble(bill_total_amount.getText()),
@@ -523,15 +557,13 @@ public class DashboardController {
     }
 
     private String generateInvoiceNumber() {
-        // TODO (Efe): Implement invoice number generation
-        // 1. Get current invoice count
-        // 2. Format new invoice number as: "INV-2024-XXX" 
-        //    where XXX is padded count + 1
-        throw new UnsupportedOperationException("Not implemented yet");
+        int invoiceCount = getInvoiceCount();
+        return String.format("INV-2024-%03d", invoiceCount + 1);
     }
 
     private int getInvoiceCount() {
         String lastInvoiceNumber = salesService.getLastSalesItem();
+
         if (lastInvoiceNumber != null) {
             Pattern pattern = Pattern.compile("(\\d{3})$");
             Matcher matcher = pattern.matcher(lastInvoiceNumber);
@@ -542,6 +574,7 @@ public class DashboardController {
                 LOGGER.warn("Invoice number format invalid: " + lastInvoiceNumber);
             }
         }
+
         return 0;
     }
 
@@ -577,7 +610,7 @@ public class DashboardController {
         user.setText(username);
     }
 
-    public void activateDashboard() {
+    public void activateDashboard(){
         dasboard_pane.setVisible(true);
         billing_pane.setVisible(false);
         customer_pane.setVisible(false);
@@ -585,7 +618,7 @@ public class DashboardController {
         purchase_pane.setVisible(false);
     }
 
-    public ObservableList<Invoice> listBillingData() {
+    public ObservableList<Invoice> listBillingData(){
         ObservableList<Invoice> billingList = FXCollections.observableArrayList();
         try {
             billingList = invoiceService.getAllInvoices();
@@ -596,21 +629,25 @@ public class DashboardController {
         return billingList;
     }
 
-    public void calculateFinalAmount() {
+    public void calculateFinalAmount(){
         try{
             final_amount.setText(invoiceService.calculateFinalAmount());
         }catch (Exception err){
             LOGGER.error("Error executing final amount sql statement {}", err.getMessage());
         }
+
     }
 
-    public void showBillingData() {
-        // TODO (Kyle): Implement billing data display
-        // 1. Get billing list from listBillingData()
-        // 2. Set up table column cell value factories
-        // 3. Update billing_table with data
-        // 4. Set current date in date picker
-        throw new UnsupportedOperationException("Not implemented yet");
+    public void showBillingData(){
+        ObservableList<Invoice> billingList = listBillingData();
+        col_bill_item_num.setCellValueFactory(new PropertyValueFactory<>("item_number"));
+        col_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        col_bill_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        col_bill_total_amt.setCellValueFactory(new PropertyValueFactory<>("total_amount"));
+
+        billing_table.setItems(billingList);
+        LocalDate date = LocalDate.now();
+        bill_date.setValue(date);
     }
 
     public void comboBoxQuantity(){

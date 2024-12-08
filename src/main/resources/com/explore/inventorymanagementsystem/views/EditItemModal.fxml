@@ -12,37 +12,84 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" prefHeight="289.0" prefWidth="361.0" spacing="10" styleClass="anchor-pane" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.explore.inventorymanagementsystem.controllers.EditItemModalController">
-   <Button fx:id="iconUpdate" alignment="CENTER" mnemonicParsing="false" onAction="#enableEditing" prefHeight="38.0" prefWidth="50.0" styleClass="add" stylesheets="@css/styles.css">
-      <graphic>
-         <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="24.0" wrappingWidth="24.0">
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
-         </FontAwesomeIconView>
-      </graphic>
-      <VBox.margin>
-         <Insets left="300.0" top="20.0" />
-      </VBox.margin>
-   </Button>
-   <Button fx:id="bill_delete" alignment="CENTER" mnemonicParsing="false" onAction="#onDelete" prefHeight="25.0" prefWidth="102.0" snapToPixel="false" styleClass="delete" stylesheets="@css/styles.css" VBox.vgrow="ALWAYS">
-      <graphic>
-         <FontAwesomeIconView fill="WHITE" glyphName="MINUS_CIRCLE" selectionFill="#740000" size="24.0" styleClass="button" text="" />
-      </graphic>
-      <VBox.margin>
-         <Insets left="170.0" right="45.0" top="-46.0" />
-      </VBox.margin>
-   </Button>
+    <Button fx:id="iconUpdate" alignment="CENTER" mnemonicParsing="false" onAction="#enableEditing" prefHeight="38.0" prefWidth="50.0" styleClass="add" stylesheets="@css/styles.css">
+        <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="24.0" wrappingWidth="24.0">
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+            </FontAwesomeIconView>
+        </graphic>
+        <VBox.margin>
+            <Insets left="300.0" top="20.0" />
+        </VBox.margin>
+    </Button>
+    <Button fx:id="bill_delete" alignment="CENTER" mnemonicParsing="false" onAction="#onDelete" prefHeight="25.0" prefWidth="102.0" snapToPixel="false" styleClass="delete" stylesheets="@css/styles.css" VBox.vgrow="ALWAYS">
+        <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="MINUS_CIRCLE" selectionFill="#740000" size="24.0" styleClass="button" text="" />
+        </graphic>
+        <VBox.margin>
+            <Insets left="170.0" right="45.0" top="-46.0" />
+        </VBox.margin>
+    </Button>
     <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Edit Item Details" />
     <GridPane hgap="10" prefWidth="273.0" vgap="10" VBox.vgrow="ALWAYS">
-        <!-- TODO (Sam): Design edit item modal -->
-        <!-- 1. Add fields for item ID, quantity, price, etc. -->
-        <!-- 2. Include buttons for saving and canceling changes -->
+        <!--<Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="idField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Invoice Number:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="invoiceNumberField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Customer Name:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="customerNameField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />-->
+        <!-- Common Fields -->
         <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <TextField fx:id="idField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <!-- TODO (Kyle): Try and ensure fields are bound to controller -->
+
+        <Label text="Invoice Number:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="invoiceNumberField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Customer Name:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="customerNameField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <!-- Additional Fields for Invoice -->
+        <Label text="Item ID:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="itemIdField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label text="Quantity:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <TextField fx:id="quantityField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+        <Label text="Unit Price:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <TextField fx:id="unitPriceField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        <Label text="Total Price:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+        <TextField fx:id="totalPriceField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+        <Label text="Sale Date:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+        <TextField fx:id="saleDateField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+        <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+        <padding>
+            <Insets left="40.0" />
+        </padding>
+
+        <!-- Add more fields as needed -->
     </GridPane>
     <Button onAction="#saveChanges" styleClass="add" stylesheets="@css/styles.css" text="Save">
-      <VBox.margin>
-         <Insets bottom="15.0" />
-      </VBox.margin></Button>
+        <VBox.margin>
+            <Insets bottom="15.0" />
+        </VBox.margin></Button>
 </VBox>
