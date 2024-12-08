@@ -66,7 +66,7 @@
             <children>
                 <ImageView fx:id="image1" fitHeight="191.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <image>
-                        <Image url="@../images/ims_icon.png" />
+                        <Image url="@../views/images/ims_iconcopy.png" />
                     </image>
                 </ImageView>
             </children>
