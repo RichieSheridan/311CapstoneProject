@@ -11,31 +11,30 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="CENTER" prefHeight="289.0" prefWidth="361.0" spacing="20" styleClass="side_panel" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.explore.inventorymanagementsystem.controllers.PurchaseModalController">
-    <GridPane hgap="10" prefWidth="273.0" vgap="10" VBox.vgrow="ALWAYS">
-        <!-- TODO (Sam): Design purchase modal -->
-        <!-- 1. Add fields for product selection, quantity, price, etc. -->
-        <!-- 2. Include buttons for processing purchase and canceling -->
-        <Label text="Product:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <ComboBox fx:id="productComboBox" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-        <!-- TODO (Kyle): Ensure fields are bound to controller -->
-      <columnConstraints>
-         <ColumnConstraints />
-         <ColumnConstraints />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-      </rowConstraints>
+    <GridPane hgap="10" vgap="10">
+        <Label styleClass="header" text="Product:" />
+        <Label fx:id="productLabel" GridPane.columnIndex="1" />
+
+        <Label styleClass="header" text="Quantity:" GridPane.rowIndex="1" />
+        <ComboBox fx:id="quantityField" promptText="Enter quantity" styleClass="button" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
     </GridPane>
 
     <HBox alignment="CENTER" spacing="10">
         <Button onAction="#handlePurchaseButtonAction" style="-fx-background-color: #363673;" text="Purchase">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
         <Button onAction="#handleCancelButtonAction" style="-fx-background-color: #363673;" text="Cancel">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor></Button>
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor></Button>
     </HBox>
 </VBox>

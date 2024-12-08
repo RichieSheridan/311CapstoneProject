@@ -49,21 +49,77 @@ public class LoginController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @FXML
-    private void handleLogin(ActionEvent event) {
-        // TODO (Efe): Implement login functionality
-        // 1. Validate username and password fields
-        // 2. Authenticate user using UserService
-        // 3. Redirect to dashboard on success
-        // 4. Display error message on failure
-        throw new UnsupportedOperationException("Not implemented yet");
+    void Login(ActionEvent event) {
+        button_login.setDisable(true);
+        String username = textField_username.getText();
+        String password = passwordField.getText();
+
+        User user = userService.getUserByUsername(username);
+
+        if (user != null && passwordMatches(user.getPassword(), password)) {
+            sessions.put(username, user);
+            status.setText("Login successful!");
+            status.setStyle("-fx-text-fill: green;");
+            button_login.setDisable(false);
+            if (user.getRole().equals("ADMIN")) {
+                openAdminDashboard();
+            } else {
+                openUserDashboard();
+            }
+        } else {
+            status.setText("Invalid credentials.");
+            status.setStyle("-fx-text-fill: red;");
+            button_login.setDisable(false);
+        }
     }
 
-    @FXML
-    public void initialize() {
-        // TODO (Kyle): Initialize login UI components
-        // 1. Set up event listeners for login button and enter key
-        // 2. Style UI elements using styles.css
-        throw new UnsupportedOperationException("Not implemented yet");
+    private boolean passwordMatches(String storedPassword, String enteredPassword) {
+        return PasswordUtil.verifyPassword(enteredPassword, storedPassword);
+    }
+
+    private void openAdminDashboard() {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("views/dashboard.fxml"));
+                Parent root = loader.load();
+
+                DashboardController dashboardController = loader.getController();
+                String username = textField_username.getText();
+                User currentUser = sessions.get(username);
+                dashboardController.setUsername(currentUser.getUsername());
+
+                Stage stage = (Stage) button_login.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                LOGGER.error("Failed to load the dashboard: ", e);
+                status.setText("System error!");
+                status.setStyle("-fx-text-fill: red;");
+            }
+        });
+    }
+
+    private void openUserDashboard() {
+        Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("views/userDashboard.fxml"));
+                Parent root = loader.load();
+
+                UserDashboardController dashboardController = loader.getController();
+                String username = textField_username.getText();
+                User currentUser = sessions.get(username);
+                dashboardController.setUsername(currentUser.getUsername());
+
+                Stage stage = (Stage) button_login.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                LOGGER.error("Failed to load the dashboard: ", e);
+                status.setText("System error!");
+                status.setStyle("-fx-text-fill: red;");
+            }
+        });
     }
 
     @FXML

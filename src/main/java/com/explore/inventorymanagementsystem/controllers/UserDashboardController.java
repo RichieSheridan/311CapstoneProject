@@ -151,7 +151,7 @@ public class UserDashboardController {
 
     @FXML
     public void handleProductClick(MouseEvent event) {
-        if (event.getClickCount() == 2) { //Doubleclick to open modal
+        if (event.getClickCount() == 2) { // Double-click to open modal
             Product selectedProduct = (Product) product_table.getSelectionModel().getSelectedItem();
             if (selectedProduct != null) {
                 openPurchaseModal(selectedProduct);
@@ -182,6 +182,7 @@ public class UserDashboardController {
     public void initialize() {
         loadProductTable();
         showProductData();
+        // SetMode
         product_table.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && !product_table.getSelectionModel().isEmpty()) {
                 Product selectedItem = (Product) product_table.getSelectionModel().getSelectedItem();

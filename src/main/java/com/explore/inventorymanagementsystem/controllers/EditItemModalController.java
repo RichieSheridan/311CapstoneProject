@@ -65,15 +65,18 @@ public class EditItemModalController {
         this.currentMode = mode;
 
         if (mode == Mode.INVOICE && item instanceof Invoice invoice) {
+            invoiceNumberField.setVisible(false);
             idField.setText(String.valueOf(invoice.getId()));
             itemIdField.setText(invoice.getItemId());
             quantityField.setText(String.valueOf(invoice.getQuantity()));
             unitPriceField.setText(String.valueOf(invoice.getUnitPrice()));
             totalPriceField.setText(String.valueOf(invoice.getTotalPrice()));
             saleDateField.setText(invoice.getSaleDate().format(formatter));
+            // Populate additional Invoice fields here
 
         } else if (mode == Mode.PRODUCT && item instanceof Product product) {
             idField.setText(String.valueOf(product.getId()));
+            invoiceNumberField.setVisible(true);
             invoiceNumberField.setText(product.getName());
             customerNameField.setText(product.getDescription());
             quantityField.setText(String.valueOf(product.getQuantity()));
@@ -84,6 +87,7 @@ public class EditItemModalController {
 
         } else if (mode == Mode.PURCHASE && item instanceof Purchase purchase) {
             idField.setText(String.valueOf(purchase.getItemId()));
+            invoiceNumberField.setVisible(false);
             quantityField.setText(String.valueOf(purchase.getQuantity()));
             unitPriceField.setText(String.valueOf(purchase.getUnitPrice()));
             totalPriceField.setText(String.valueOf(purchase.getTotalPrice()));
@@ -92,6 +96,7 @@ public class EditItemModalController {
             customerNameField.setText(purchase.getStatus().toString());
 
         } else if (mode == Mode.SALES && item instanceof Sales sale) {
+            invoiceNumberField.setVisible(true);
             invoiceNumberField.setText(sale.getInvoiceNumber());
             idField.setText(String.valueOf(sale.getCustomerId()));
             customerNameField.setText(sale.getCustomerName());
@@ -116,31 +121,102 @@ public class EditItemModalController {
 
     @FXML
     private void saveChanges() {
-        // TODO (Efe): Implement save changes functionality
-        // 1. Validate input data from modal fields
-        // 2. Update item in database using appropriate service
-        // 3. Close modal and refresh parent view
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (currentMode == Mode.INVOICE && selectedItem instanceof Invoice invoice) {
+            invoice.setItemId(itemIdField.getText());
+            invoice.setQuantity(Integer.parseInt(quantityField.getText()));
+            invoice.setUnitPrice(Double.parseDouble(unitPriceField.getText()));
+            invoice.setTotalPrice(Double.parseDouble(totalPriceField.getText()));
+            // Update additional fields and save to the database
+            try {
+                invoiceService.updateInvoice(invoice.getId(), invoice.getQuantity(), invoice.getUnitPrice());
+            } catch (Exception e){
+                LoggerFactory.getLogger(EditItemModalController.class).error(e.getMessage());
+            }
+            modalStage.close();
+        } else if (currentMode == Mode.PRODUCT && selectedItem instanceof Product product) {
+            product.setName(invoiceNumberField.getText());
+            product.setDescription(customerNameField.getText());
+            product.setQuantity(Integer.parseInt(quantityField.getText()));
+            product.setPrice(Double.parseDouble(unitPriceField.getText()));
+            product.setCategory(itemIdField.getText());
+            product.setSupplier(saleDateField.getText());
+            product.setReorderPoint(Integer.parseInt(totalPriceField.getText()));
+
+            try {
+                productService.updateItem(product);
+
+            } catch (Exception e){
+                LoggerFactory.getLogger(EditItemModalController.class).error(e.getMessage());
+            }
+
+        } else if (currentMode == Mode.PURCHASE && selectedItem instanceof Purchase purchase) {
+            purchase.setQuantity(Integer.parseInt(quantityField.getText()));
+            purchase.setUnitPrice(Double.parseDouble(unitPriceField.getText()));
+            purchase.setTotalPrice(Double.parseDouble(totalPriceField.getText()));
+            purchase.setSupplierInfo(itemIdField.getText());
+            // Update status if necessary
+
+            try {
+                purchaseService.updatePurchase(purchase);
+
+            } catch (Exception e){
+                LoggerFactory.getLogger(EditItemModalController.class).error(e.getMessage());
+            }
+            modalStage.close();
+
+        } else if (currentMode == Mode.SALES && selectedItem instanceof Sales sale) {
+            sale.setInvoiceNumber(invoiceNumberField.getText());
+            sale.setCustomerId(Integer.parseInt(idField.getText()));
+            sale.setCustomerName(customerNameField.getText());
+            sale.setPrice(Double.parseDouble(unitPriceField.getText()));
+            sale.setQuantity(Integer.parseInt(quantityField.getText()));
+            sale.setTotalAmount(Double.parseDouble(totalPriceField.getText()));
+
+            try {
+                salesService.updateSales(sale);
+
+            } catch (Exception e){
+                LoggerFactory.getLogger(EditItemModalController.class).error(e.getMessage());
+            }
+            modalStage.close();
+        }
     }
 
     @FXML
-    public void onDelete() {
-        // TODO (Efe): Implement item deletion
-        // 1. Get selected item details
-        // 2. Show confirmation dialog
-        // 3. Delete from appropriate service
-        // 4. Update UI and close modal
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
+    private void onDelete(){
+        if (currentMode == Mode.INVOICE && selectedItem instanceof Invoice invoice) {
+            try {
+                invoiceService.deleteInvoice(invoice.getId());
+            } catch (Exception e){
+                LoggerFactory.getLogger(EditItemModalController.class).error(e.getMessage());
+            }
+            modalStage.close();
+        } else if (currentMode == Mode.PRODUCT && selectedItem instanceof Product product) {
+            try {
+                productService.deleteItem(product.getId());
 
-    @FXML
-    public void onSave() {
-        // TODO (Efe): Implement save functionality
-        // 1. Validate form fields
-        // 2. Update item using appropriate service
-        // 3. Show success/error message
-        // 4. Close modal on success
-        throw new UnsupportedOperationException("Not implemented yet");
+            } catch (Exception e){
+                LoggerFactory.getLogger(EditItemModalController.class).error(e.getMessage());
+            }
+            modalStage.close();
+        } else if (currentMode == Mode.PURCHASE && selectedItem instanceof Purchase purchase) {
+            try {
+                purchaseService.deletePurchase(purchase.getId());
+
+            } catch (Exception e){
+                LoggerFactory.getLogger(EditItemModalController.class).error(e.getMessage());
+            }
+            modalStage.close();
+
+        } else if (currentMode == Mode.SALES && selectedItem instanceof Sales sale) {
+            try {
+                salesService.deleteSales(sale.getId());
+
+            } catch (Exception e){
+                LoggerFactory.getLogger(EditItemModalController.class).error(e.getMessage());
+            }
+            modalStage.close();
+        }
     }
 
     private void showErrorAlert() {
@@ -154,15 +230,7 @@ public class EditItemModalController {
     @FXML
     public void initialize(){
         Platform.runLater(() -> {
-                modalStage = (Stage) idField.getScene().getWindow();
+            modalStage = (Stage) idField.getScene().getWindow();
         });
-    }
-
-    @FXML
-    private void cancelEdit() {
-        // TODO (Sam): Implement cancel edit functionality
-        // 1. Close modal without saving changes
-        // 2. Optionally confirm cancellation with user
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 }

@@ -30,14 +30,14 @@
                             </graphic>
                         </Button>
 
-<!--                        <Button fx:id="purchase_btn" layoutX="37.0" layoutY="250.0" mnemonicParsing="false" onAction="#loadPurchaseTable" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="side_panel_button" text="PURCHASE" textFill="WHITE">-->
-<!--                            <font>-->
-<!--                                <Font size="16.0" />-->
-<!--                            </font>-->
-<!--                            <graphic>-->
-<!--                                <FontAwesomeIconView fill="WHITE" glyphName="SHOPPING_BAG" size="1.2em" />-->
-<!--                            </graphic>-->
-<!--                        </Button>-->
+                        <!--                        <Button fx:id="purchase_btn" layoutX="37.0" layoutY="250.0" mnemonicParsing="false" onAction="#loadPurchaseTable" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="side_panel_button" text="PURCHASE" textFill="WHITE">-->
+                        <!--                            <font>-->
+                        <!--                                <Font size="16.0" />-->
+                        <!--                            </font>-->
+                        <!--                            <graphic>-->
+                        <!--                                <FontAwesomeIconView fill="WHITE" glyphName="SHOPPING_BAG" size="1.2em" />-->
+                        <!--                            </graphic>-->
+                        <!--                        </Button>-->
 
                         <Button fx:id="signout_btn" layoutX="37.0" layoutY="600.0" mnemonicParsing="false" onAction="#signOut" prefHeight="38.0" prefWidth="200.0" styleClass="side_panel_button" text="SIGN OUT" textFill="WHITE">
                             <font>
@@ -47,14 +47,14 @@
                                 <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="1.2em" />
                             </graphic>
                         </Button>
-                  <Label fx:id="user" alignment="CENTER" layoutX="72.0" layoutY="62.0" prefHeight="21.0" prefWidth="109.0" styleClass="user" text="user" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Black" size="20.0" />
-                     </font>
-                  </Label>
+                        <Label fx:id="user" alignment="CENTER" layoutX="72.0" layoutY="62.0" prefHeight="21.0" prefWidth="109.0" styleClass="user" text="user" textFill="WHITE">
+                            <font>
+                                <Font name="Arial Black" size="20.0" />
+                            </font>
+                        </Label>
                     </children>
                 </AnchorPane>
-      
+
                 <!-- Main Content Area with Padding and Header Styling -->
                 <AnchorPane layoutX="275.0" prefHeight="694.0" prefWidth="808.0" styleClass="main_content">
                     <children>
@@ -65,7 +65,7 @@
                                         <Font name="Baskerville Old Face" size="24.0" />
                                     </font>
                                 </Label>
-      
+
                                 <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="750.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#onExit" prefHeight="29.0" prefWidth="50.0" style="-fx-background-color: #363673;" stylesheets="@css/styles.css" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="128.0">
                                     <graphic>
                                         <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="20.0" />
@@ -73,13 +73,18 @@
                                 </Button>
                             </children>
                         </AnchorPane>
-      
+
                         <!-- Billing Pane with Table Styling -->
                         <AnchorPane fx:id="billing_pane" layoutX="-0.6666666666666666" layoutY="80.0" prefHeight="614.0" prefWidth="829.0" styleClass="main-anchor-customer-pane-screen" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-120.0">
                             <children>
-                                <TableView fx:id="product_table" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="600.0">
-                                    <!-- TODO (Kyle): Define table columns -->
-                                    <!-- Example: <TableColumn fx:id="col_product_item_num" text="Item Number" /> -->
+                                <TableView fx:id="product_table" layoutX="90.0" layoutY="61.0" prefHeight="411.0" prefWidth="716.0" styleClass="styled-table">
+                                    <columns>
+                                        <TableColumn fx:id="col_product_item_num" prefWidth="105.3333511352539" text="Item Number" />
+                                        <TableColumn fx:id="col_product_quantity" prefWidth="119.33332824707031" text="Quantity" />
+                                        <TableColumn fx:id="col_product_name" prefWidth="199.3333740234375" text="Product Name" />
+                                        <TableColumn fx:id="col_product_price" prefWidth="116.66665649414062" text="Price" />
+                                        <TableColumn fx:id="col_product_total_amt" prefWidth="170.0001220703125" text="Total Amount" />
+                                    </columns>
                                 </TableView>
                             </children>
                         </AnchorPane>

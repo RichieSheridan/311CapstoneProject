@@ -1,10 +1,11 @@
 package com.explore.inventorymanagementsystem.models;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Purchase implements Reportable{
     private Integer id;
-    private Integer itemId;
+    private String itemId;
     private int quantity;
     private double unitPrice;
     private double totalPrice;
@@ -43,11 +44,11 @@ public class Purchase implements Reportable{
         return "";
     }
 
-    public Integer getItemId() {
+    public String getItemId() {
         return itemId;
     }
 
-    public void setItemId(Integer itemId) {
+    public void setItemId(String itemId) {
         this.itemId = itemId;
     }
 
