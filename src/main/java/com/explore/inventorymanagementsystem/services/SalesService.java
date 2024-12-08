@@ -15,28 +15,28 @@ public class SalesService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SalesService.class);
 
     public boolean createItem(Sales item) {
-        // TODO (Richie): Implement sales record creation
-        // 1. Prepare SQL INSERT statement for sales table
-        // 2. Set parameters from Sales object (invoice number, customer details, amounts)
-        // 3. Execute update and handle errors
-        throw new UnsupportedOperationException("Not implemented yet");
+        String sql = "INSERT INTO sales (invoice_number, customer_id, customer_name, price, quantity, total_amount, date, item_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Assuming Product has these getter methods
+            pstmt.setString(1, item.getInvoiceNumber()); // Invoice number
+            pstmt.setInt(2, item.getCustomerId()); // Customer ID
+            pstmt.setString(3, item.getCustomerName()); // Customer name
+            pstmt.setDouble(4, item.getPrice()); // Price
+            pstmt.setInt(5, item.getQuantity()); // Quantity
+            pstmt.setDouble(6, item.getTotalAmount()); // Total amount
+            pstmt.setDate(7, Date.valueOf(item.getDate())); // Date, assuming LocalDate in Product
+            pstmt.setString(8, item.getItemNum()); // Item number
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.error("Error creating inventory item {}", e);
+            return false;
+        }
     }
 
-    public String getLastSalesItem() {
-        // TODO (Richie): Retrieve most recent sales record
-        // 1. Query sales table for most recent entry
-        // 2. Extract and return invoice number
-        // 3. Handle case when no sales exist
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    public ObservableList<Sales> getAllSales() {
-        // TODO (Richie): Implement sales record retrieval
-        // 1. Execute SELECT query on sales table
-        // 2. Convert ResultSet to Sales objects
-        // 3. Return ObservableList of sales
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
 
     // Method to get the total quantity sold
     public String getTotalSales() {
@@ -56,40 +56,84 @@ public class SalesService {
 
     // Method to get the sales details of the current month
     public String getSalesDetailsOfThisMonth(String monthName) {
-        // TODO (Richie): Implement monthly sales calculation
-        // 1. Query sales for specified month
-        // 2. Calculate total amount
-        // 3. Handle null results and format output
-        throw new UnsupportedOperationException("Not implemented yet");
+        String sql = "SELECT SUM(total_amount) AS total_sales_this_month FROM SALES WHERE MONTHNAME(DATE) = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, monthName);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("total_sales_this_month") == null ? "0.00" : resultSet.getString("total_sales_this_month");
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error fetching sales details for this month", e);
+        }
+        return "0.00";
     }
 
     public ObservableList<Sales> getAllItems() {
-        // TODO (Efe): Implement sales record retrieval and management
-        // 1. Design data retrieval strategy
-        // 2. Implement error handling protocol
-        // 3. Coordinate with UI team for data display
-        throw new UnsupportedOperationException("Not implemented yet");
+        String sql = "SELECT * FROM sales";
+        ObservableList<Sales> sales = FXCollections.observableArrayList();;
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                sales.add(new Sales(
+                        rs.getInt("id"),
+                        rs.getString("invoice_number"),
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name"),
+                        rs.getDouble("price"),
+                        rs.getInt("quantity"),
+                        rs.getDouble("total_amount"),
+                        rs.getString("date"),
+                        rs.getString("item_num")
+                ));
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error fetching all sales items", e);
+        }
+        return sales;
     }
 
     // Method to get the items sold for the current month
     public String getItemSoldThisMonth(String monthName) {
+        String sql = "SELECT SUM(quantity) AS total_items_sold_this_month FROM SALES WHERE MONTHNAME(DATE) = ?";
+        try (Connection connection = DatabaseUtil.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-        String sql = "SELECT SUM(quantity) AS total_sold FROM sales WHERE MONTHNAME(date) = ?";
-        try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, monthName);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    int totalSold = rs.getInt("total_sold");
-                    return totalSold == 0 ? "No sales this month" : String.valueOf(totalSold);
+            preparedStatement.setString(1, monthName);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("total_items_sold_this_month") == null ? "0" : resultSet.getString("total_items_sold_this_month");
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("Error fetching items sold this month for {}", monthName, e);
+            LOGGER.error("Error fetching items sold for this month", e);
         }
-        return "Error retrieving sales data";
+        return "0";
+    }
+
+    public String getLastSalesItem() {
+        String sql = "SELECT invoice_number FROM sales ORDER BY date DESC LIMIT 1"; // Assuming `date` is a timestamp column to order by most recent
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getString("invoice_number");
+            } else {
+                LOGGER.warn("No sales data found in the database.");
+                return null;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error fetching last sales item", e);
+            return null;
+        }
     }
 
     public boolean updateSales(Sales item) {
