@@ -82,6 +82,7 @@ public class UserDashboardController {
                 FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("views/Login.fxml"));
                 Parent root = loader.load();
 
+                // Remove the current user's session from the active sessions list
                 String username = user.getText();
                 LoginController.sessions.remove(username);
 
@@ -126,10 +127,12 @@ public class UserDashboardController {
         col_product_price.setCellValueFactory(new PropertyValueFactory<>("price"));
         col_product_total_amt.setCellValueFactory(new PropertyValueFactory<>("reorderPoint"));
 
+        // Convert product list to Reportable objects and display in the table
         ObservableList<Reportable> reportableList = convertToReportableList(productsList);
         product_table.setItems(reportableList);
     }
 
+    // Fetches the products from the database and handles errors if they occur
     public ObservableList<Product> displayProducts(){
         try {
             productList = productService.getAllItems();
@@ -151,6 +154,7 @@ public class UserDashboardController {
 
     @FXML
     public void handleProductClick(MouseEvent event) {
+        // Handles the event when a product is double-clicked in the product table
         if (event.getClickCount() == 2) { // Double-click to open modal
             Product selectedProduct = (Product) product_table.getSelectionModel().getSelectedItem();
             if (selectedProduct != null) {
