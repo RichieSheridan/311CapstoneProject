@@ -1,6 +1,6 @@
 /* AnchorPane Styles */
 .anchor-pane {
-    -fx-border-color: #A89873;
+    -fx-border-color: #5c7d9e;
     -fx-border-width: 0px 20px 0px 20px;
     -fx-background-color: #FBF5E6;
 }
@@ -46,69 +46,66 @@
 }
 
 .side_panel_admin {
-    -fx-background-color: #A89873;
+    -fx-background-color: #5c7d9e;
 }
 
 .side_panel_admin_button {
-    -fx-background-color:linear-gradient(to bottom right , #9a6343, #5c3812);
+    -fx-background-color:linear-gradient(to bottom right, #4c6a8b, #1c3e61);
     -fx-text-alignment: left;
 }
 
-.side_panel_admin_button:hover{
-    -fx-background-color:linear-gradient(to bottom right , #5c3812, #9a6343);
+.side_panel_admin_button:hover {
+    -fx-background-color:linear-gradient(to bottom right, #1c3e61, #4c6a8b);
 }
 
 .header_text {
     -fx-font-size: 20px;
     -fx-text-fill: #ffffff;
-    /* TODO (Sam): Adjust header text style for better readability */
 }
 
-.table-view .table-column{
-    -fx-alignment:CENTER;
+.table-view .table-column {
+    -fx-alignment: CENTER;
 }
 
-.table-view{
+.table-view {
     -fx-background-color: transparent;
-    -fx-border-color: #A89873;
+    -fx-border-color: #5c7d9e; /* Changed to light dark blue */
     -fx-border-radius: 8px;
     -fx-padding: 0px;
-    /* TODO (Kyle): Add hover effects for table rows */
 }
 
-.table-view .column-header-background{
-    -fx-background-color: #5c3812;
+.table-view .column-header-background {
+    -fx-background-color: #1c3e61; /* Changed to darker blue */
     -fx-background-insets: 0 0 0 0;
     -fx-background-radius: 8px 8px 0px 0px;
 }
 
-.table-view .column-header,.filter{
-    -fx-background-color:transparent;
-    -fx-size:40;
+.table-view .column-header, .filter {
+    -fx-background-color: transparent;
+    -fx-size: 40;
 }
 
-.table-view .column-header .label{
-    -fx-text-fill:#fff;
-    -fx-font-family:"Arial"
+.table-view .column-header .label {
+    -fx-text-fill: #fff;
+    -fx-font-family: "Arial";
 }
 
-.textfield{
-    -fx-background-color:linear-gradient(to bottom,#efefef,#eee);
-    -fx-border-color:linear-gradient(to bottom right, #2f466b, #662d60);
-    -fx-border-width:.8px;
-    -fx-font-family:"Tahoma";
-    -fx-border-radius:4px;
+.textfield {
+    -fx-background-color: linear-gradient(to bottom, #efefef, #eee);
+    -fx-border-color: linear-gradient(to bottom right, #2f466b, #662d60);
+    -fx-border-width: .8px;
+    -fx-font-family: "Tahoma";
+    -fx-border-radius: 4px;
     -fx-padding: 5px;
-    /* TODO (Sam): Style focused text fields for better UX */
 }
 
-.textfield:focused{
-    -fx-border-width:1.8px;
-    -fx-background-color:#fff;
+.textfield:focused {
+    -fx-border-width: 1.8px;
+    -fx-background-color: #fff;
 }
 
-.close,.add,.save,.clear,.delete,.refresh,.print{
-    -fx-background-color: #5c3812;
+.close, .add, .save, .clear, .delete, .refresh, .print {
+    -fx-background-color: #1c3e61; /* Changed to darker blue */
     -fx-background-radius: 3px;
     -fx-cursor: hand;
     -fx-text-fill: #fff;
@@ -123,19 +120,19 @@
 }
 
 .side_panel {
-    -fx-background-color: #2c3e50; /* Dark blue-gray */
+    -fx-background-color: #2c3e50;
     -fx-padding: 20px;
 }
 
 .side_panel_button {
-    -fx-background-color: #34495e; /* Lighter blue-gray */
+    -fx-background-color: #34495e;
     -fx-border: none;
     -fx-padding: 10px;
     -fx-transition: background-color 0.3s;
 }
 
 .side_panel_button:hover {
-    -fx-background-color: #3b5998; /* Blue hover effect */
+    -fx-background-color: #3b5998;
 }
 
 .main-anchor-customer-pane-screen {
@@ -156,7 +153,6 @@
 .header_text {
     -fx-font-size: 24px;
     -fx-color: white;
-
 }
 
 .close_button {
@@ -169,30 +165,3 @@
     -fx-border-width: 1px;
     -fx-table-cell-border-color: lightgray;
 }
-
-/* TODO (Sam): Implement dashboard styling */
-.dashboard-container {
-    /* 1. Set up grid layout */
-    /* 2. Configure spacing and padding */
-    /* 3. Add background colors and gradients */
-}
-
-/* TODO (Sam): Style navigation menu */
-.nav-menu {
-    /* 1. Configure menu layout */
-    /* 2. Style menu items */
-    /* 3. Add hover effects */
-}
-
-/* TODO (Kyle): Implement form styling */
-.form-container {
-    /* 1. Style input fields */
-    /* 2. Configure button layouts */
-    /* 3. Add validation indicators */
-}
-
-/* TODO (Kyle): Make the design more responsive*/
-/* 1. Add media queries for different screen sizes */
-/* 2. Adjust layouts for mobile/tablet */
-/* 3. Ensure consistent spacing */
-
