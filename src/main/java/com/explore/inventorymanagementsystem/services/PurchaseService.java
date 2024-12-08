@@ -1,5 +1,6 @@
 package com.explore.inventorymanagementsystem.services;
 
+import com.explore.inventorymanagementsystem.models.Invoice;
 import com.explore.inventorymanagementsystem.models.Purchase;
 import com.explore.inventorymanagementsystem.models.Status;
 import com.explore.inventorymanagementsystem.utils.DatabaseUtil;
@@ -51,7 +52,7 @@ public class PurchaseService {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return new Purchase(
-                            rs.getInt("id"), rs.getString("item_id"),
+                            rs.getString("item_id"),
                             rs.getInt("quantity"),
                             rs.getDouble("unit_price"),
                             rs.getDouble("total_price"),

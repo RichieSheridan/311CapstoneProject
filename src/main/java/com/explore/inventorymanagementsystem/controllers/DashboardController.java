@@ -10,6 +10,7 @@ import com.explore.inventorymanagementsystem.utils.ReportGeneratorUtil;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,9 +28,13 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import org.controlsfx.control.textfield.TextFields;
 
 public class DashboardController {
 
@@ -532,7 +537,7 @@ public class DashboardController {
 
     private void savePurchaseData() {
         boolean status = purchaseService.createPurchase(new Purchase(
-                rs.getInt("id"), bill_item.getText(),
+                bill_item.getText(),
                 Integer.parseInt(bill_quantity.getValue().toString()),
                 Double.parseDouble(bill_price.getText()),
                 Double.parseDouble(bill_total_amount.getText()),
