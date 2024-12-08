@@ -60,8 +60,7 @@
 
 .header_text {
     -fx-font-size: 20px;
-    -fx-text-fill: #ffffff;
-    /* TODO (Sam): Adjust header text style for better readability */
+    -fx-text-fill: #ffffff
 }
 
 .table-view .table-column{
@@ -72,8 +71,7 @@
     -fx-background-color: transparent;
     -fx-border-color: #A89873;
     -fx-border-radius: 8px;
-    -fx-padding: 0px;
-    /* TODO (Kyle): Add hover effects for table rows */
+    -fx-padding: 0px
 }
 
 .table-view .column-header-background{
@@ -99,7 +97,6 @@
     -fx-font-family:"Tahoma";
     -fx-border-radius:4px;
     -fx-padding: 5px;
-    /* TODO (Sam): Style focused text fields for better UX */
 }
 
 .textfield:focused{
@@ -169,30 +166,4 @@
     -fx-border-width: 1px;
     -fx-table-cell-border-color: lightgray;
 }
-
-/* TODO (Sam): Implement dashboard styling */
-.dashboard-container {
-    /* 1. Set up grid layout */
-    /* 2. Configure spacing and padding */
-    /* 3. Add background colors and gradients */
-}
-
-/* TODO (Sam): Style navigation menu */
-.nav-menu {
-    /* 1. Configure menu layout */
-    /* 2. Style menu items */
-    /* 3. Add hover effects */
-}
-
-/* TODO (Kyle): Implement form styling */
-.form-container {
-    /* 1. Style input fields */
-    /* 2. Configure button layouts */
-    /* 3. Add validation indicators */
-}
-
-/* TODO (Kyle): Make the design more responsive*/
-/* 1. Add media queries for different screen sizes */
-/* 2. Adjust layouts for mobile/tablet */
-/* 3. Ensure consistent spacing */
 
