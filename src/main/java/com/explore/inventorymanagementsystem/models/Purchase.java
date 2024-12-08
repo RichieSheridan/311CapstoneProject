@@ -1,7 +1,6 @@
 package com.explore.inventorymanagementsystem.models;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class Purchase implements Reportable{
     private Integer id;
@@ -25,7 +24,7 @@ public class Purchase implements Reportable{
         this.status = status;
     }
 
-    public Purchase(Integer itemId, int quantity, double unitPrice, double totalPrice,
+    public Purchase(int id, String itemId, int quantity, double unitPrice, double totalPrice,
                     LocalDateTime purchaseDate, String supplierInfo, Status status) {
         this.itemId = itemId;
         this.quantity = quantity;

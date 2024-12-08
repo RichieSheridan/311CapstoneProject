@@ -1,6 +1,5 @@
 package com.explore.inventorymanagementsystem.services;
 
-import com.explore.inventorymanagementsystem.models.Invoice;
 import com.explore.inventorymanagementsystem.models.Purchase;
 import com.explore.inventorymanagementsystem.models.Status;
 import com.explore.inventorymanagementsystem.utils.DatabaseUtil;
@@ -19,11 +18,26 @@ public class PurchaseService {
 
     // Create
     public boolean createPurchase(Purchase purchase) {
-        // TODO (Richie): Implement purchase record creation
-        // 1. Prepare SQL INSERT statement for purchases table
-        // 2. Set parameters from Purchase object
-        // 3. Execute update and handle errors
-        throw new UnsupportedOperationException("Not implemented yet");
+        String sql = "INSERT INTO purchases (item_id, quantity, unit_price, total_price, " +
+                "purchase_date, supplier_info, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // pstmt.setObject(1, purchase.getId());
+            pstmt.setObject(2, purchase.getItemId());
+            pstmt.setInt(3, purchase.getQuantity());
+            pstmt.setDouble(4, purchase.getUnitPrice());
+            pstmt.setDouble(5, purchase.getTotalPrice());
+            pstmt.setTimestamp(6, Timestamp.valueOf(purchase.getPurchaseDate()));
+            pstmt.setString(7, purchase.getSupplierInfo());
+            pstmt.setString(8, purchase.getStatus().toString());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            LOGGER.error("Error creating purchase", e);
+            return false;
+        }
     }
 
     public Purchase getPurchasesById(UUID id) {
@@ -37,12 +51,12 @@ public class PurchaseService {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return new Purchase(
-                            rs.getInt("itemId"),
+                            rs.getInt("id"), rs.getString("item_id"),
                             rs.getInt("quantity"),
-                            rs.getDouble("unitPrice"),
-                            rs.getDouble("totalPrice"),
-                            rs.getDate("purchaseDate").toLocalDate().atStartOfDay(),
-                            rs.getString("supplierInfo"),
+                            rs.getDouble("unit_price"),
+                            rs.getDouble("total_price"),
+                            rs.getDate("purchase_date").toLocalDate().atStartOfDay(),
+                            rs.getString("supplier_info"),
                             Status.valueOf(rs.getString("status"))
                     );
                 }
@@ -68,12 +82,27 @@ public class PurchaseService {
         return "0";
     }
 
-    public ObservableList<Purchase> getAllPurchases() {
-        // TODO (Richie): Implement purchase record retrieval
-        // 1. Execute SELECT query on purchases table
-        // 2. Convert ResultSet to Purchase objects
-        // 3. Return ObservableList of purchases
-        throw new UnsupportedOperationException("Not implemented yet");
+    public ObservableList<Purchase> getAllPurchases() throws SQLException {
+        ObservableList<Purchase> purchases = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM purchases";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                purchases.add(new Purchase(
+                        rs.getInt("id"),
+                        rs.getString("item_id"),
+                        rs.getInt("quantity"),
+                        rs.getDouble("unit_price"),
+                        rs.getDouble("total_price"),
+                        rs.getDate("purchase_date").toLocalDate().atStartOfDay(),
+                        rs.getString("supplier_info"),
+                        Status.valueOf(rs.getString("status"))
+                ));
+            }
+        }
+        return purchases;
     }
 
     public boolean updatePurchase(Purchase purchase) {
