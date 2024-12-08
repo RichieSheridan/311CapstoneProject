@@ -49,6 +49,7 @@ public class PurchaseModalController {
 
     @FXML
     private void handlePurchaseButtonAction() {
+        // Get the selected quantity from the dropdown
         int quantity = Integer.parseInt(quantityField.getSelectionModel().getSelectedItem().toString());
 
         // Open confirmation modal
@@ -58,6 +59,7 @@ public class PurchaseModalController {
 
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            // If the user clicks "OK", proceed with the purchase
             processPurchase(quantity);
         }
     }
@@ -69,6 +71,7 @@ public class PurchaseModalController {
 
     @FXML
     private void processPurchase(int quantity) {
+        // This method processes the purchase, updates the inventory, creates the invoice, and logs the sale
         Stage stage = (Stage) quantityField.getScene().getWindow();
         stage.close();
 
@@ -83,6 +86,7 @@ public class PurchaseModalController {
 
     }
 
+    // Retrieves the last invoice number from the sales service and extracts the last 3 digits
     private int getInvoiceCount() {
         String lastInvoiceNumber = salesService.getLastSalesItem();
 
@@ -90,17 +94,21 @@ public class PurchaseModalController {
             Pattern pattern = Pattern.compile("(\\d{3})$"); // Regex to match the last 3 digits
             Matcher matcher = pattern.matcher(lastInvoiceNumber);
 
+            // If the regex matches, extract and return the last 3 digits
             if (matcher.find()) {
                 return Integer.parseInt(matcher.group(1));
             } else {
+                // Log a warning if the invoice number format is invalid
                 LOGGER.warn("Invoice number format invalid: " + lastInvoiceNumber);
             }
         }
 
+        // Return 0 if the invoice number cannot be found or matched
         return 0;
     }
 
     private String generateInvoiceNumber() {
+        // Get the last invoice count and generate a new invoice number
         int invoiceCount = getInvoiceCount();
         return String.format("INV-2024-%03d", invoiceCount + 1);
     }
@@ -110,7 +118,10 @@ public class PurchaseModalController {
     }
 
     public void setQuantityOptions() {
+        // Create a list to store the available quantity options
         ObservableList<Integer> quantityOptions = FXCollections.observableArrayList();
+
+        // Add numbers from 1 to the available product quantity in the dropdown
         for (int i = 1; i <= product.getQuantity(); i++) {
             quantityOptions.add(i);
         }
