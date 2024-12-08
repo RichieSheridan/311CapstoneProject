@@ -60,6 +60,7 @@ public class EditItemModalController {
 
     Stage modalStage;
 
+    // Method to set the data of the selected item based on the mode (Invoice, Product, Purchase, Sales)
     public void setItemData(Object item, Mode mode) {
         this.selectedItem = item;
         this.currentMode = mode;
@@ -75,6 +76,7 @@ public class EditItemModalController {
             // Populate additional Invoice fields here
 
         } else if (mode == Mode.PRODUCT && item instanceof Product product) {
+            // Handle the data population for Product mode
             idField.setText(String.valueOf(product.getId()));
             invoiceNumberField.setVisible(true);
             invoiceNumberField.setText(product.getName());
@@ -86,6 +88,7 @@ public class EditItemModalController {
             totalPriceField.setText(String.valueOf(product.getReorderPoint()));
 
         } else if (mode == Mode.PURCHASE && item instanceof Purchase purchase) {
+            // Handle the data population for Purchase mode
             idField.setText(String.valueOf(purchase.getItemId()));
             invoiceNumberField.setVisible(false);
             quantityField.setText(String.valueOf(purchase.getQuantity()));
@@ -96,6 +99,7 @@ public class EditItemModalController {
             customerNameField.setText(purchase.getStatus().toString());
 
         } else if (mode == Mode.SALES && item instanceof Sales sale) {
+            // Handle the data population for Sales mode
             invoiceNumberField.setVisible(true);
             invoiceNumberField.setText(sale.getInvoiceNumber());
             idField.setText(String.valueOf(sale.getCustomerId()));
@@ -121,6 +125,8 @@ public class EditItemModalController {
 
     @FXML
     private void saveChanges() {
+        // Method to save changes made to the selected item (Invoice, Product, Purchase, or Sales)
+        // Handle saving changes for Invoice mode
         if (currentMode == Mode.INVOICE && selectedItem instanceof Invoice invoice) {
             invoice.setItemId(itemIdField.getText());
             invoice.setQuantity(Integer.parseInt(quantityField.getText()));
@@ -134,6 +140,7 @@ public class EditItemModalController {
             }
             modalStage.close();
         } else if (currentMode == Mode.PRODUCT && selectedItem instanceof Product product) {
+            // Handle saving changes for Product mode
             product.setName(invoiceNumberField.getText());
             product.setDescription(customerNameField.getText());
             product.setQuantity(Integer.parseInt(quantityField.getText()));
@@ -150,6 +157,7 @@ public class EditItemModalController {
             }
 
         } else if (currentMode == Mode.PURCHASE && selectedItem instanceof Purchase purchase) {
+            // Handle saving changes for Purchase mode
             purchase.setQuantity(Integer.parseInt(quantityField.getText()));
             purchase.setUnitPrice(Double.parseDouble(unitPriceField.getText()));
             purchase.setTotalPrice(Double.parseDouble(totalPriceField.getText()));
@@ -165,6 +173,7 @@ public class EditItemModalController {
             modalStage.close();
 
         } else if (currentMode == Mode.SALES && selectedItem instanceof Sales sale) {
+            // Handle saving changes for Sales mode
             sale.setInvoiceNumber(invoiceNumberField.getText());
             sale.setCustomerId(Integer.parseInt(idField.getText()));
             sale.setCustomerName(customerNameField.getText());
@@ -184,6 +193,7 @@ public class EditItemModalController {
 
     @FXML
     private void onDelete(){
+        // Handle delete for Invoice mode
         if (currentMode == Mode.INVOICE && selectedItem instanceof Invoice invoice) {
             try {
                 invoiceService.deleteInvoice(invoice.getId());
@@ -192,6 +202,7 @@ public class EditItemModalController {
             }
             modalStage.close();
         } else if (currentMode == Mode.PRODUCT && selectedItem instanceof Product product) {
+            // Handle delete for Product mode
             try {
                 productService.deleteItem(product.getId());
 
@@ -200,6 +211,7 @@ public class EditItemModalController {
             }
             modalStage.close();
         } else if (currentMode == Mode.PURCHASE && selectedItem instanceof Purchase purchase) {
+            // Handle delete for Purchase mode
             try {
                 purchaseService.deletePurchase(purchase.getId());
 
@@ -209,6 +221,7 @@ public class EditItemModalController {
             modalStage.close();
 
         } else if (currentMode == Mode.SALES && selectedItem instanceof Sales sale) {
+            // Handle delete for Sales mode
             try {
                 salesService.deleteSales(sale.getId());
 
