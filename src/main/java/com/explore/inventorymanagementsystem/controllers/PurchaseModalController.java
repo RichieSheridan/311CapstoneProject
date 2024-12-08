@@ -34,7 +34,7 @@ public class PurchaseModalController {
     private final InvoiceService invoiceService = new InvoiceService();
     private static final Logger LOGGER = LoggerFactory.getLogger(PurchaseModalController.class);
     private final SalesService salesService = new SalesService();
-    
+
     public void setProduct(Product product) {
         this.product = product;
 
@@ -42,7 +42,7 @@ public class PurchaseModalController {
             productLabel.setText(product.getName());
         }
     }
-    
+
     public void setUser(User user){
         this.user = user;
     }
@@ -72,6 +72,7 @@ public class PurchaseModalController {
         Stage stage = (Stage) quantityField.getScene().getWindow();
         stage.close();
 
+        // Add purchase to database
         Invoice invoice = new Invoice(generateInvoiceNumber(), quantity, product.getPrice(), calculateTotalPrice(product, quantity), LocalDateTime.now());
         Sales sales = new Sales(invoice.getItemId(), user.getId(), user.getUsername(), product.getPrice(), quantity, calculateTotalPrice(product, quantity), LocalDate.now().toString(), product.getId().toString());
         product.setQuantity(product.getQuantity() - quantity);
@@ -79,13 +80,29 @@ public class PurchaseModalController {
 
         salesService.createItem(sales);
         invoiceService.createInvoice(invoice);
+
+    }
+
+    private int getInvoiceCount() {
+        String lastInvoiceNumber = salesService.getLastSalesItem();
+
+        if (lastInvoiceNumber != null) {
+            Pattern pattern = Pattern.compile("(\\d{3})$"); // Regex to match the last 3 digits
+            Matcher matcher = pattern.matcher(lastInvoiceNumber);
+
+            if (matcher.find()) {
+                return Integer.parseInt(matcher.group(1));
+            } else {
+                LOGGER.warn("Invoice number format invalid: " + lastInvoiceNumber);
+            }
+        }
+
+        return 0;
     }
 
     private String generateInvoiceNumber() {
-        // TODO (Efe): Implement invoice number generation
-        // 1. Generate unique invoice number based on current date/time
-        // 2. Ensure no duplicates in database
-        throw new UnsupportedOperationException("Not implemented yet");
+        int invoiceCount = getInvoiceCount();
+        return String.format("INV-2024-%03d", invoiceCount + 1);
     }
 
     private double calculateTotalPrice(Product product, int quantity) {

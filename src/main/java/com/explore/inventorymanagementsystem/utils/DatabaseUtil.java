@@ -39,11 +39,7 @@ public class DatabaseUtil {
     }
 
     public static Connection getConnection() throws SQLException {
-        // TODO (Richie): Implement database connection
-        // 1. Load database properties
-        // 2. Establish connection using JDBC
-        // 3. Handle connection errors
-        throw new UnsupportedOperationException("Not implemented yet");
+        return DriverManager.getConnection(url, props.getProperty("db.user"), props.getProperty("db.password"));
     }
 
     public static void closeConnection(Connection conn) {
@@ -66,14 +62,6 @@ public class DatabaseUtil {
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Connection test failed", e);
         }
-    }
-
-    public static void initializeDatabase() {
-        // TODO (Richie): Implement database initialization
-        // 1. Create tables if they don't exist
-        // 2. Set up initial data if needed
-        // 3. Verify database schema
-        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public static void main(String[] args){

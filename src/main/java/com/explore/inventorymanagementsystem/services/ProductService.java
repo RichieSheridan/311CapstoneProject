@@ -8,8 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class ProductService {
@@ -17,16 +19,29 @@ public class ProductService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
     public boolean createItem(Product item) {
-        // TODO (Richie): Implement product creation in database
-        // 1. Prepare SQL INSERT statement for products table
-        // 2. Set parameters from Product object
-        // 3. Execute update and handle errors
-        // 4. Return success/failure status
-        throw new UnsupportedOperationException("Not implemented yet");
+        String sql = "INSERT INTO products (name, description, quantity, price, category, " +
+                "supplier, reorder_point) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, item.getName());
+            pstmt.setString(2, item.getDescription());
+            pstmt.setInt(3, item.getQuantity());
+            pstmt.setDouble(4, item.getPrice());
+            pstmt.setString(5, item.getCategory());
+            pstmt.setString(6, item.getSupplier());
+            pstmt.setInt(7, item.getReorderPoint());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            LOGGER.error("Error creating inventory item", e);
+            return false;
+        }
     }
 
     // Read
-    public Product getItemById(int id) {
+    public Product getItemById(UUID id) {
         String sql = "SELECT * FROM products WHERE id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
@@ -55,9 +70,8 @@ public class ProductService {
     }
 
     public ObservableList<Product> getAllItems() {
-
         String sql = "SELECT * FROM products";
-        ObservableList<Product> products = FXCollections.observableArrayList();
+        ObservableList<Product> products = FXCollections.observableArrayList();;
 
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -76,15 +90,15 @@ public class ProductService {
                 ));
             }
         } catch (SQLException e) {
-            LOGGER.error("Error retrieving products from database", e, Level.SEVERE);
+            LOGGER.error("Error fetching all inventory items", e);
         }
         return products;
     }
 
     // Update
     public boolean updateItem(Product item) {
-
-        String sql = "UPDATE products SET name = ?, description = ?, quantity = ?, price = ?, category = ?, supplier = ?, reorder_point = ? WHERE id = ?";
+        String sql = "UPDATE products SET name = ?, description = ?, quantity = ?, " +
+                "price = ?, category = ?, supplier = ?, last_updated = ?, reorder_point = ? WHERE id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -95,25 +109,32 @@ public class ProductService {
             pstmt.setDouble(4, item.getPrice());
             pstmt.setString(5, item.getCategory());
             pstmt.setString(6, item.getSupplier());
-            pstmt.setInt(7, item.getReorderPoint());
-            pstmt.setInt(8, item.getId());
+            pstmt.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setInt(8, item.getReorderPoint());
+            pstmt.setObject(9, item.getId());
 
-            int affectedRows = pstmt.executeUpdate();
-            return affectedRows > 0;
-
+            return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            LOGGER.error("Error updating product in database", e, Level.SEVERE);
+            LOGGER.error("Error updating inventory item", e, Level.SEVERE);
+            return false;
         }
-        return false;
     }
 
     // Delete
     public boolean deleteItem(Integer id) {
-        // TODO (Richie): Implement product deletion from database
-        // 1. Prepare SQL DELETE statement
-        // 2. Execute update and handle errors
-        // 3. Return success/failure status
-        throw new UnsupportedOperationException("Not implemented yet");
+        String sql = "DELETE FROM products WHERE id = ?";
+
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            LOGGER.error("Error deleting inventory item", e);
+            return false;
+        }
     }
 
     // Additional utility methods

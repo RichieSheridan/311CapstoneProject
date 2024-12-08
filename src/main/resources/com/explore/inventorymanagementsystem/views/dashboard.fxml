@@ -187,12 +187,12 @@
                   <AnchorPane fx:id="billing_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" styleClass="main-anchor-pane-screen" stylesheets="@css/styles.css" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="55.0">
                      <children>
                         <TableView fx:id="billing_table" layoutX="13.0" layoutY="59.0" prefHeight="280.0" prefWidth="794.0" stylesheets="@css/styles.css">
-                          <columns>
+                           <columns>
                               <TableColumn fx:id="col_bill_item_num" prefWidth="254.4000244140625" text="Item Number" />
                               <TableColumn fx:id="col_bill_quantity" prefWidth="189.5999755859375" text="Quantity" />
                               <TableColumn fx:id="col_bill_price" prefWidth="150.4000244140625" text="Price" />
                               <TableColumn fx:id="col_bill_total_amt" minWidth="0.0" prefWidth="197.60001220703123" text="Total Amount" />
-                          </columns>
+                           </columns>
                         </TableView>
                         <TableView fx:id="product_table" layoutX="13.0" layoutY="59.0" prefHeight="280.0" prefWidth="794.0" stylesheets="@css/styles.css">
                            <columns>
@@ -263,22 +263,22 @@
                            <font>
                               <Font name="Dubai Bold" size="16.0" />
                            </font></Button>
-<!--                        <Label fx:id="itemId" layoutX="27.0" layoutY="352.0" prefHeight="32.0" prefWidth="152.0" text="Product Number :">-->
-<!--                           <font>-->
-<!--                              <Font name="Dubai Bold" size="15.0" />-->
-<!--                           </font>-->
-<!--                        </Label>-->
-<!--                        <Label fx:id="inv_num" layoutX="191.0" layoutY="352.0" prefHeight="32.0" prefWidth="102.0" />-->
-<!--                        <Label fx:id="finalAmount" layoutX="448.0" layoutY="534.0" prefHeight="32.0" prefWidth="102.0" text="Final Amount:">-->
-<!--                           <font>-->
-<!--                              <Font name="Dubai Bold" size="15.0" />-->
-<!--                           </font>-->
-<!--                        </Label>-->
-<!--                        <Label layoutX="559.0" layoutY="534.0" prefHeight="32.0" prefWidth="15.0" text="\$">-->
-<!--                           <font>-->
-<!--                              <Font name="Dubai Bold" size="18.0" />-->
-<!--                           </font>-->
-<!--                        </Label>-->
+                        <!--                        <Label fx:id="itemId" layoutX="27.0" layoutY="352.0" prefHeight="32.0" prefWidth="152.0" text="Product Number :">-->
+                        <!--                           <font>-->
+                        <!--                              <Font name="Dubai Bold" size="15.0" />-->
+                        <!--                           </font>-->
+                        <!--                        </Label>-->
+                        <!--                        <Label fx:id="inv_num" layoutX="191.0" layoutY="352.0" prefHeight="32.0" prefWidth="102.0" />-->
+                        <!--                        <Label fx:id="finalAmount" layoutX="448.0" layoutY="534.0" prefHeight="32.0" prefWidth="102.0" text="Final Amount:">-->
+                        <!--                           <font>-->
+                        <!--                              <Font name="Dubai Bold" size="15.0" />-->
+                        <!--                           </font>-->
+                        <!--                        </Label>-->
+                        <!--                        <Label layoutX="559.0" layoutY="534.0" prefHeight="32.0" prefWidth="15.0" text="\$">-->
+                        <!--                           <font>-->
+                        <!--                              <Font name="Dubai Bold" size="18.0" />-->
+                        <!--                           </font>-->
+                        <!--                        </Label>-->
                         <Label fx:id="final_amount" layoutX="569.0" layoutY="534.0" prefHeight="32.0" prefWidth="156.0" text="0.00">
                            <font>
                               <Font name="Dubai Bold" size="18.0" />

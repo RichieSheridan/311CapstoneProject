@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Purchase implements Reportable{
     private Integer id;
-    private Integer itemId;
+    private String itemId;
     private int quantity;
     private double unitPrice;
     private double totalPrice;
@@ -13,7 +13,7 @@ public class Purchase implements Reportable{
     private String supplierInfo;
     private Status status;
 
-    public Purchase(Integer id, Integer itemId, int quantity, double unitPrice, double totalPrice,
+    public Purchase(Integer id, String itemId, int quantity, double unitPrice, double totalPrice,
                     LocalDateTime purchaseDate, String supplierInfo, Status status) {
         this.id = id;
         this.itemId = itemId;
@@ -25,7 +25,7 @@ public class Purchase implements Reportable{
         this.status = status;
     }
 
-    public Purchase(Integer itemId, int quantity, double unitPrice, double totalPrice,
+    public Purchase(String itemId, int quantity, double unitPrice, double totalPrice,
                     LocalDateTime purchaseDate, String supplierInfo, Status status) {
         this.itemId = itemId;
         this.quantity = quantity;
@@ -44,11 +44,11 @@ public class Purchase implements Reportable{
         return "";
     }
 
-    public Integer getItemId() {
+    public String getItemId() {
         return itemId;
     }
 
-    public void setItemId(Integer itemId) {
+    public void setItemId(String itemId) {
         this.itemId = itemId;
     }
 
