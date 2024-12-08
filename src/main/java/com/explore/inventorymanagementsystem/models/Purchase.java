@@ -12,7 +12,7 @@ public class Purchase implements Reportable{
     private String supplierInfo;
     private Status status;
 
-    public Purchase(Integer id, Integer itemId, int quantity, double unitPrice, double totalPrice,
+    public Purchase(Integer id, String itemId, int quantity, double unitPrice, double totalPrice,
                     LocalDateTime purchaseDate, String supplierInfo, Status status) {
         this.id = id;
         this.itemId = itemId;
